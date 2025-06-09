@@ -1,7 +1,17 @@
 export default async function handler(req, res) {
+  if (req.method === "OPTIONS") {
+    // プリフライトリクエスト対応
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
+
+  res.setHeader("Access-Control-Allow-Origin", "*"); // CORS許可
 
   const userMessage = req.body.message || "";
   const fakeReply = `「${userMessage}」についての回答は、準備中です。`;
