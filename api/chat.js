@@ -1,4 +1,4 @@
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   // CORS対応
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Origin", "*");
