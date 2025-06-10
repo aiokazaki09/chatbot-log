@@ -39,17 +39,17 @@ export default async function handler(req, res) {
   };
   
   // clinicIdの受信確認ログ（デバッグ用）
-  console.log("📌 受信したclinicId:", clinicId);
-  
-  // 未定義のclinicIdが渡された場合はエラーにする
-  if (!formConfigs[clinicId]) {
-    return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
-  }
-  
-  const apiKey = process.env.OPENAI_API_KEY;
-  const endpoint = "https://api.openai.com/v1/chat/completions";
-  
-  const config = formConfigs[clinicId] || formConfigs["sakura"];
+console.log("📌 受信したclinicId:", clinicId);
+
+// 未定義のclinicIdが渡された場合はエラーにする
+if (!formConfigs[clinicId]) {
+  return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
+}
+
+const config = formConfigs[clinicId];
+const apiKey = process.env.OPENAI_API_KEY;
+const endpoint = "https://api.openai.com/v1/chat/completions";
+
 
   try {
     // ChatGPTへ送信
