@@ -72,7 +72,7 @@ export default async function handler(req, res) {
     const formattedReply = formatReply(gptReply);
     
     // ChatGPTの回答に予約リンクと電話番号を追加
-    const replyWithLink = `${gptReply}
+    const replyWithLink = `${formattedReply}
     
     ▼ご予約はこちら
     ${config.reservationUrl}
