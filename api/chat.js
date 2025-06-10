@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     tel: "098-875-8044" // 電話番号（半角ハイフンあり）
     },
     tamagawa: {
-      formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSeExampleTamagawaFormID/formResponse",
+      formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSdPRoDvoJqylPeEVJh8fpK2GfXBYkQJ-n1GpJ53k96KqGaSjg/formResponse",
       entries: {
         user: "entry.1291744880",
         bot: "entry.373821226"
