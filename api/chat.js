@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS対応
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -46,7 +46,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
   }
   
-  const config = formConfigs[clinicId]; // フォールバックせず明示的に指定
   const apiKey = process.env.OPENAI_API_KEY;
   const endpoint = "https://api.openai.com/v1/chat/completions";
   
