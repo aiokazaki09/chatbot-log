@@ -63,6 +63,14 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     const gptReply = data.choices?.[0]?.message?.content || "回答が見つかりませんでした。";
+
+    // 回答を文末ごとに改行する関数
+    function formatReply(text) {
+      return text.replace(/。/g, "。\n");
+    }
+    
+    const formattedReply = formatReply(gptReply);
+    
     // ChatGPTの回答に予約リンクと電話番号を追加
     const replyWithLink = `${gptReply}
     
@@ -72,6 +80,7 @@ export default async function handler(req, res) {
     ▼お電話でのご相談はこちら
     TEL: ${config.tel}
     `;
+    
     // Googleフォームへ送信
     const formData = new URLSearchParams();
     formData.append(config.entries.user, userMessage);
