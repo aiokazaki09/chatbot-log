@@ -14,19 +14,8 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   const { message: userMessage = "", clinicId = "sakura" } = req.body;
-  // clinicIdの受信確認ログ（デバッグ用）
-  console.log("📌 受信したclinicId:", clinicId);
-  
-  // 未定義のclinicIdが渡された場合はエラーにする
-  if (!formConfigs[clinicId]) {
-    return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
-  }
-  
-  const config = formConfigs[clinicId]; // フォールバックせず明示的に指定
-  const apiKey = process.env.OPENAI_API_KEY;
-  const endpoint = "https://api.openai.com/v1/chat/completions";
 
-  // 各医院ごとの設定
+   // 各医院ごとの設定
   const formConfigs = {
     sakura: {
       formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSdPRoDvoJqylPeEVJh8fpK2GfXBYkQJ-n1GpJ53k96KqGaSjg/formResponse",
@@ -48,6 +37,18 @@ export default async function handler(req, res) {
     }
     // ここに追加可能
   };
+  
+  // clinicIdの受信確認ログ（デバッグ用）
+  console.log("📌 受信したclinicId:", clinicId);
+  
+  // 未定義のclinicIdが渡された場合はエラーにする
+  if (!formConfigs[clinicId]) {
+    return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
+  }
+  
+  const config = formConfigs[clinicId]; // フォールバックせず明示的に指定
+  const apiKey = process.env.OPENAI_API_KEY;
+  const endpoint = "https://api.openai.com/v1/chat/completions";
   
   const config = formConfigs[clinicId] || formConfigs["sakura"];
 
