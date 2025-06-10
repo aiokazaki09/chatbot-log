@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
-  const { message: userMessage = "", clinicId = "sakura" } = req.body;
+  const { message: userMessage = "", clinicId } = req.body;
 
    // 各医院ごとの設定
   const formConfigs = {
