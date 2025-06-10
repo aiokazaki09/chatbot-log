@@ -54,7 +54,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "あなたは親切な歯科医院のスタッフです。" },
+          { role: "system", content: "あなたは親切な歯科医院のスタッフです。専門用語はなるべく避けてわかりやすい回答をお願いします。また、予約につながるように返答してください。" },
           { role: "user", content: userMessage }
         ],
         temperature: 0.7
@@ -63,7 +63,15 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     const gptReply = data.choices?.[0]?.message?.content || "回答が見つかりませんでした。";
+// ChatGPTの回答に予約リンクと電話番号を追加
+const replyWithLink = `${gptReply}
 
+▼ご予約はこちら
+${config.reservationUrl}
+
+▼お電話でのご相談はこちら
+TEL: ${config.tel}
+`;
     // Googleフォームへ送信
     const formData = new URLSearchParams();
     formData.append(config.entries.user, userMessage);
