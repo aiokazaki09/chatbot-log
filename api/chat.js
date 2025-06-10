@@ -1,10 +1,11 @@
 export default async function handler(req, res) {
+  // CORS対応
   if (req.method === "OPTIONS") {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  return res.status(200).end();
-}
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    return res.status(200).end();
+  }
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
@@ -12,12 +13,34 @@ export default async function handler(req, res) {
 
   res.setHeader("Access-Control-Allow-Origin", "*");
 
-  const userMessage = req.body.message || "";
+  const { message: userMessage = "", clinicId = "sakura" } = req.body;
   const apiKey = process.env.OPENAI_API_KEY;
 
   const endpoint = "https://api.openai.com/v1/chat/completions";
 
+  // 各医院ごとの設定
+  const formConfigs = {
+    sakura: {
+      formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSdPRoDvoJqylPeEVJh8fpK2GfXBYkQJ-n1GpJ53k96KqGaSjg/formResponse",
+      entries: {
+        user: "entry.373821226", // ユーザー質問
+        bot: "entry.1291744880" // ボット回答
+      }
+    },
+    tamagawa: {
+      formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSeExampleTamagawaFormID/formResponse",
+      entries: {
+        user: "entry.1291744880",
+        bot: "entry.373821226"
+      }
+    }
+    // ここに追加可能
+  };
+
+  const config = formConfigs[clinicId] || formConfigs["sakura"];
+
   try {
+    // ChatGPTへ送信
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
@@ -37,16 +60,12 @@ export default async function handler(req, res) {
     const data = await response.json();
     const gptReply = data.choices?.[0]?.message?.content || "回答が見つかりませんでした。";
 
-    // Googleフォームにも送信
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdPRoDvoJqylPeEVJh8fpK2GfXBYkQJ-n1GpJ53k96KqGaSjg/formResponse";
+    // Googleフォームへ送信
     const formData = new URLSearchParams();
-    formData.append("entry.373821226", userMessage);
-    formData.append("entry.1291744880", gptReply);
-    formData.append("entry.792462004", "");
-    formData.append("entry.1582178216", "");
-    formData.append("entry.1527040321", "");
+    formData.append(config.entries.user, userMessage);
+    formData.append(config.entries.bot, gptReply)
 
-    fetch(formUrl, {
+    fetch(config.formUrl, {
       method: "POST",
       body: formData,
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
