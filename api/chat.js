@@ -84,7 +84,7 @@ export default async function handler(req, res) {
     // Googleフォームへ送信
     const formData = new URLSearchParams();
     formData.append(config.entries.user, userMessage);
-    formData.append(config.entries.bot, gptReply)
+    formData.append(config.entries.bot, replyWithLink)
 
     fetch(config.formUrl, {
       method: "POST",
@@ -94,7 +94,7 @@ export default async function handler(req, res) {
       console.error("❌ Googleフォーム送信失敗:", err.message);
     });
 
-    return res.status(200).json({ reply: gptReply });
+    return res.status(200).json({ reply: replyWithLink });
   } catch (error) {
     console.error("❌ ChatGPT APIエラー:", error);
     return res.status(500).json({ error: "ChatGPTへの接続に失敗しました。" });
