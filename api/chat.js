@@ -23,17 +23,17 @@ export default async function handler(req, res) {
     sakura: {
       formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSdPRoDvoJqylPeEVJh8fpK2GfXBYkQJ-n1GpJ53k96KqGaSjg/formResponse",
       entries: {
-        user: "entry.373821226", // ユーザー質問
-        bot: "entry.1291744880" // ボット回答
+        user: "entry.1291744880", // ユーザー質問
+        bot: "entry.373821226" // ボット回答
       },
     reservationUrl: "https://sakurashika-clinic.jp/reservation/",
     tel: "098-875-8044" // 電話番号（半角ハイフンあり）
     },
     tamagawa: {
-      formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSdPRoDvoJqylPeEVJh8fpK2GfXBYkQJ-n1GpJ53k96KqGaSjg/formResponse",
+      formUrl: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSclRVMUX4EHA1-MhMlZb_Ee5gUw3EiZWJobIXDMzyc8DMvCBQ/formRespons",
       entries: {
-        user: "entry.373821226",
-        bot: "entry.1291744880"
+        user: "entry.1291744880",
+        bot: "entry.373821226"
       },
     reservationUrl: "https://www.tamagawa-sika.com/contact/",
     tel: "078-331-4008" // 電話番号（半角ハイフンあり）
