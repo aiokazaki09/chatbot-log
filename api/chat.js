@@ -15,7 +15,6 @@ export default async function handler(req, res) {
 
   const { message: userMessage = "", clinicId = "sakura" } = req.body;
   const apiKey = process.env.OPENAI_API_KEY;
-
   const endpoint = "https://api.openai.com/v1/chat/completions";
 
   // 各医院ごとの設定
@@ -30,7 +29,7 @@ export default async function handler(req, res) {
     tel: "098-875-8044" // 電話番号（半角ハイフンあり）
     },
     tamagawa: {
-      formUrl: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSclRVMUX4EHA1-MhMlZb_Ee5gUw3EiZWJobIXDMzyc8DMvCBQ/formRespons",
+      formUrl: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSclRVMUX4EHA1-MhMlZb_Ee5gUw3EiZWJobIXDMzyc8DMvCBQ/formResponse",
       entries: {
         user: "entry.1291744880",
         bot: "entry.373821226"
@@ -40,7 +39,7 @@ export default async function handler(req, res) {
     }
     // ここに追加可能
   };
-
+  
   const config = formConfigs[clinicId] || formConfigs["sakura"];
 
   try {
@@ -54,8 +53,14 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [
-          { role: "system", content: "あなたは親切な歯科医院のスタッフです。専門用語はなるべく避けてわかりやすい回答をお願いします。また、予約につながるように予約リンクと電話番号を返答の最後につけてください。" },
-          { role: "user", content: userMessage }
+          {
+            role: "system",
+            content: "あなたは親切な歯科医院のスタッフです。専門用語はなるべく避けてわかりやすい回答をお願いします。また、予約につながるように予約リンクと電話番号を返答の最後につけてください。"
+          },
+          {
+            role: "user",
+            content: userMessage
+          }
         ],
         temperature: 0.7
       })
@@ -68,28 +73,28 @@ export default async function handler(req, res) {
     function formatReply(text) {
       return text.replace(/。/g, "。\n");
     }
-    
+
     const formattedReply = formatReply(gptReply);
-    
-    // ChatGPTの回答に予約リンクと電話番号を追加
+
+    // 回答に予約リンクと電話番号を追加
     const replyWithLink = `${formattedReply}
-    
-    ▼ご予約はこちら
-    ${config.reservationUrl}
-    
-    ▼お電話でのご相談はこちら
-    TEL: ${config.tel}
-    `;
-    
-    // Googleフォームへ送信
+
+▼ご予約はこちら
+${config.reservationUrl}
+
+▼お電話でのご相談はこちら
+TEL: ${config.tel}
+`;
+
+    // Googleフォームに送信
     const formData = new URLSearchParams();
     formData.append(config.entries.user, userMessage);
-    formData.append(config.entries.bot, replyWithLink)
+    formData.append(config.entries.bot, replyWithLink);
 
-    fetch(config.formUrl, {
+    await fetch(config.formUrl, {
       method: "POST",
-      body: formData,
-      headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData.toString() // ←これが必要
     }).catch(err => {
       console.error("❌ Googleフォーム送信失敗:", err.message);
     });
