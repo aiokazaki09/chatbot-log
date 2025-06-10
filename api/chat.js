@@ -14,6 +14,15 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   const { message: userMessage = "", clinicId = "sakura" } = req.body;
+  // clinicIdの受信確認ログ（デバッグ用）
+  console.log("📌 受信したclinicId:", clinicId);
+  
+  // 未定義のclinicIdが渡された場合はエラーにする
+  if (!formConfigs[clinicId]) {
+    return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
+  }
+  
+  const config = formConfigs[clinicId]; // フォールバックせず明示的に指定
   const apiKey = process.env.OPENAI_API_KEY;
   const endpoint = "https://api.openai.com/v1/chat/completions";
 
@@ -55,7 +64,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "system",
-            content: "あなたは親切な歯科医院のスタッフです。専門用語はなるべく避けてわかりやすい回答をお願いします。また、予約につながるように予約リンクと電話番号を返答の最後につけてください。"
+            content: "あなたは親切な歯科医院のスタッフです。専門用語はなるべく避けてわかりやすい回答をお願いします。また、予約を促すような内容にしてください。"
           },
           {
             role: "user",
@@ -71,8 +80,8 @@ export default async function handler(req, res) {
 
     // 回答を文末ごとに改行する関数
     function formatReply(text) {
-      return text.replace(/。/g, "。\n");
-    }
+  return text.replace(/。(?=[^\n])/g, "。\n");
+}
 
     const formattedReply = formatReply(gptReply);
 
