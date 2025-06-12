@@ -34,6 +34,15 @@ export default async function handler(req, res) {
       },
     reservationUrl: "https://www.tamagawa-sika.com/contact/",
     tel: "078-331-4008" // 電話番号（半角ハイフンあり）
+    },
+    masahisa: {
+        formUrl: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSclRVMUX4EHA1-MhMlZb_Ee5gUw3EiZWJobIXDMzyc8DMvCBQ/formResponse",
+        entries: {
+            user: "entry.1291744880",
+            bot: "entry.373821226"
+        },
+        reservationUrl: "https://m-dental.net/inquiry/",
+        tel: "086-234-5255" // 電話番号（半角ハイフンあり）
     }
     // ここに追加可能
   };
