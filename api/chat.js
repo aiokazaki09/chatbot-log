@@ -43,6 +43,15 @@ export default async function handler(req, res) {
         },
         reservationUrl: "https://m-dental.net/inquiry/",
         tel: "086-234-5255" // 電話番号（半角ハイフンあり）
+    },
+    uruma: {
+        formUrl: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSel3Mgus8qTt3Pu-OGaXMvuh3ew8n5spj1ne-46v9AYQQh4jQ/formResponse",
+        entries: {
+            user: "entry.1291744880",
+            bot: "entry.373821226"
+        },
+        reservationUrl: "https://1st-dc.com/contact/",
+        tel: "098-973-8010" // 電話番号（半角ハイフンあり）
     }
     // ここに追加可能
   };
