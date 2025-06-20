@@ -105,13 +105,13 @@ const endpoint = "https://api.openai.com/v1/chat/completions";
 
     // 回答に予約リンクと電話番号を追加
     const replyWithLink = `${formattedReply}
-
-▼ご予約はこちら
-${config.reservationUrl}
-
-▼お電話でのご相談はこちら
-TEL: ${config.tel}
-`;
+    
+    ▼ご予約はこちら  
+    <a href="${config.reservationUrl}" target="_blank" rel="noopener noreferrer">${config.reservationUrl}</a>
+    
+    ▼お電話でのご相談はこちら  
+    <a href="tel:${config.tel.replace(/-/g, '')}">${config.tel}</a>
+    `;
 
     // Googleフォームに送信
     const formData = new URLSearchParams();
