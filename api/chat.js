@@ -52,8 +52,17 @@ export default async function handler(req, res) {
         },
         reservationUrl: "https://1st-dc.com/contact/",
         tel: "098-973-8010" // 電話番号（半角ハイフンあり）
+    },
+        oiki: {
+        formUrl: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfQ1jboQd0YxoTZ3U_pfUHWNk6zsKYdDKj906AJVBiV9ab-sw/formResponse",
+        entries: {
+            user: "entry.1291744880",
+            bot: "entry.373821226"
+        },
+        reservationUrl: "https://oiki.atat.jp/i/f.php",
+        tel: "0725-47-3113" // 電話番号（半角ハイフンあり）
     }
-    // ここに追加可能
+  // ここに追加可能
   };
   
   // clinicIdの受信確認ログ（デバッグ用）
