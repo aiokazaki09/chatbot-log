@@ -48,7 +48,7 @@ export default async function handler(req, res) {
       specialty: "耳鼻科",
       formUrl: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfQ1jboQd0YxoTZ3U_pfUHWNk6zsKYdDKj906AJVBiV9ab-sw/formResponse",
       entries: { user: "entry.1291744880", bot: "entry.373821226" },
-      reservationUrl: "https://oiki.atat.jp/i/f.php",
+      reservationUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
       tel: "0725-47-3113",
     }    
     // ここに増やすだけで対応可能
