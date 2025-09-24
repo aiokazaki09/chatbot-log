@@ -23,7 +23,16 @@ export default async function handler(req, res) {
       entries: { user: "entry.1291744880", bot: "entry.373821226" },
       reservationUrl: "https://sakurashika-clinic.jp/reservation/",
       tel: "098-875-8044",
+
+      // 表示制御（未指定はデフォルトtrue）
+      showPhone: true,
+      showEmergencyNotice: true,
+
+      // 任意ラベル
+      reservationLabel: "ご予約はこちら",
+      inquiryLabel: "お電話でのご相談"
     },
+
     tamagawa: {
       specialty: "歯科",
       formUrl:
@@ -31,7 +40,12 @@ export default async function handler(req, res) {
       entries: { user: "entry.1291744880", bot: "entry.373821226" },
       reservationUrl: "https://www.tamagawa-sika.com/contact/",
       tel: "078-331-4008",
+      showPhone: true,
+      showEmergencyNotice: true,
+      reservationLabel: "ご予約はこちら",
+      inquiryLabel: "お電話でのご相談"
     },
+
     masahisa: {
       specialty: "歯科",
       formUrl:
@@ -39,7 +53,12 @@ export default async function handler(req, res) {
       entries: { user: "entry.1291744880", bot: "entry.373821226" },
       reservationUrl: "https://m-dental.net/inquiry/",
       tel: "086-234-5255",
+      showPhone: true,
+      showEmergencyNotice: true,
+      reservationLabel: "ご予約はこちら",
+      inquiryLabel: "お電話でのご相談"
     },
+
     uruma: {
       specialty: "歯科",
       formUrl:
@@ -47,12 +66,19 @@ export default async function handler(req, res) {
       entries: { user: "entry.1291744880", bot: "entry.373821226" },
       reservationUrl: "https://1st-dc.com/contact/",
       tel: "098-973-8010",
+      showPhone: true,
+      showEmergencyNotice: true,
+      reservationLabel: "ご予約はこちら",
+      inquiryLabel: "お電話でのご相談"
     },
+
     // ▼ oiki（耳鼻科）：サイト限定回答モード＋医院目線
     oiki: {
       specialty: "耳鼻科",
-      formUrl:"https://docs.google.com/forms/u/0/d/e/1FAIpQLSfQ1jboQd0YxoTZ3U_pfUHWNk6zsKYdDKj906AJVBiV9ab-sw/formResponse",
+      formUrl:
+        "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfQ1jboQd0YxoTZ3U_pfUHWNk6zsKYdDKj906AJVBiV9ab-sw/formResponse",
       entries: { user: "entry.1291744880", bot: "entry.373821226" },
+
       // --- サイト限定回答ガード ---
       siteOnlyMode: true,
       siteUrl: "https://www.oikiiin.com/",
@@ -62,11 +88,17 @@ export default async function handler(req, res) {
       // oikiでは電話・救急を出さない
       showPhone: false,
       showEmergencyNotice: false,
-      reservationLabel: "ご予約はこちら", // 必要に応じて「手術相談のご予約」等へ変更
+
+      reservationLabel: "ご予約はこちら", // 例: 「手術相談のご予約」に変えてもOK
       inquiryLabel: "お問い合わせはこちら",
+
       siteFallbackText:
-        `当院サイト（{SITE_URL}）に記載のない内容のため、個別確認が必要です。お手数ですが「お問い合わせ」からご相談ください。`,
+        "当院サイト（{SITE_URL}）に記載のない内容のため、個別確認が必要です。お手数ですが「お問い合わせ」からご相談ください。",
+
+      // 外出し本文テンプレ（入れたらLLMは呼びません。下の置換キーが使えます）
+      // 置換キー: {USER_MESSAGE} / {SITE_URL} / {RESERVATION_URL} / {INQUIRY_URL} / {TEL}
       staticBodyTemplate: null,
+
       // oiki専用プロンプト（医院目線を強制）
       promptOverride: `
 【oiki専用方針：サイト限定回答 & 医院目線】
@@ -90,6 +122,8 @@ export default async function handler(req, res) {
       `,
       // true: 共通/科別を無視して完全置換、false: 共通＋科別に追記
       promptReplace: false,
+
+      // 医院別フッター（電話非表示）
       footerTemplate: ({ reservationUrl, inquiryUrl }) => {
         return [
           "— — —",
@@ -109,47 +143,64 @@ export default async function handler(req, res) {
     共通: `
 あなたは医療機関の受付スタッフです。専門用語は避け、やさしく具体的に案内してください。
 診断はせず、一般的な情報提供と受診案内に徹してください。
-緊急性が疑われる場合は直ちに119または救急相談（#7119等）を案内してください。
-回答の最後に「予約リンク」と「電話相談」を促してください。
-`,
+回答の最後に「予約リンク」と（医院設定に応じて）電話やお問い合わせ導線を促してください。`,
     歯科: `
 患者さんは歯・歯ぐき・噛み合わせ・インプラント・矯正などのお悩みを想定。
 痛みの強さ、発症時期、詰め物/被せ物の脱離、外傷（歯の破折/脱臼）、腫れや発熱の有無などを優しく確認し、
-応急対応（うがいは水で、患部は冷やし過ぎない等）の一般情報と受診目安を案内してください。
-`,
+応急対応（うがいは水で、患部は冷やし過ぎない等）の一般情報と受診目安を案内してください。`,
     内科: `
-患者さんは発熱・咳・喉痛・腹痛・下痢・吐き気・頭痛・生活習慣病相談等を想定。
-重篤サイン（強い胸痛/息苦しさ/意識障害/ろれつ不良/片側の麻痺/激しい頭痛/血便など）は即時救急を案内。
-それ以外は受診目安（症状の持続時間、重症度、基礎疾患、妊娠中か等）を丁寧に確認し、適切に来院/オンライン/電話相談を促してください。
-`,
+発熱・咳・喉痛・腹痛・下痢・吐き気・頭痛・生活習慣病相談等を想定。
+重篤サイン（強い胸痛/息苦しさ等）は救急。それ以外は症状の持続時間・重症度等を確認して案内してください。`,
     皮膚科: `
 発疹・かゆみ・湿疹・蕁麻疹・にきび・やけど等を想定。
-広がり・発熱の有無・痛み/膿・使用中の外用/内服・アレルギー歴などを確認し、
-市販薬の自己判断は控える旨と適切な受診案内をしてください。
-`,
+広がり・発熱の有無・痛み/膿・使用中の外用/内服・アレルギー歴などを確認し、受診案内をしてください。`,
     耳鼻科: `
-患者さんは耳・鼻・喉に関する症状（耳の痛み・耳だれ・耳の詰まり感、鼻づまり・鼻水・副鼻腔炎、喉の痛み・声のかすれ・いびき等）を想定。
-症状の持続期間、発熱の有無、聞こえの変化、強いめまいや吐き気、耳や顔の腫れ、呼吸のしにくさなどを優しく確認してください。
-強い耳の痛み・急な難聴・激しいめまい・呼吸困難などは救急受診を案内し、
-それ以外は受診目安（急ぎか様子見可か）をわかりやすく伝えてください。
-`,
+耳・鼻・喉の症状を想定。急な難聴・激しいめまい・呼吸困難などは救急。
+それ以外は受診目安（急ぎ/様子見）をわかりやすく。`,
   };
 
   // クリニック用に最終systemプロンプトを構築
-  const buildSystemPrompt = (config) => {
+  const buildSystemPrompt = (cfg) => {
     const common = specialtyPrompts["共通"] || "";
-    const byDept = specialtyPrompts[config.specialty] || "";
+    const byDept = specialtyPrompts[cfg.specialty] || "";
     const clinicTail = `
-ここは「${config.specialty}」の医療機関です。予約や電話の案内は必ず末尾に含めてください。
+ここは「${cfg.specialty}」の医療機関です。予約や連絡導線は医院設定に従って末尾に含めてください。
 宣伝ではなく、患者さんの不安を軽くする実務的な案内を心がけてください。`;
 
     const merged = [common, byDept, clinicTail].filter(Boolean).join("\n");
 
     // クリニック専用プロンプトがあれば反映
-    if (config.promptOverride) {
-      return config.promptReplace ? config.promptOverride : [merged, config.promptOverride].join("\n");
+    if (cfg.promptOverride) {
+      return cfg.promptReplace ? cfg.promptOverride : [merged, cfg.promptOverride].join("\n");
     }
     return merged;
+  };
+
+  // 文単位で改行（日本語の句点で区切る）
+  const formatReply = (text) => (text || "").replace(/。(?=[^\n])/g, "。\n");
+
+  // 医院ごとのフッター（電話表示の有無や文言を尊重）
+  const buildFooter = (cfg) => {
+    if (typeof cfg.footerTemplate === "function") {
+      return cfg.footerTemplate({
+        reservationUrl: cfg.reservationUrl,
+        inquiryUrl: cfg.inquiryUrl,
+        tel: cfg.tel,
+      });
+    }
+    const rows = ["— — —"];
+    const reservationLabel = cfg.reservationLabel || "ご予約はこちら";
+    rows.push(
+      `▼${reservationLabel}\n<a href="${cfg.reservationUrl}" target="_blank" rel="noopener noreferrer">${cfg.reservationUrl}</a>`
+    );
+
+    const showPhone = cfg.showPhone !== false; // 未指定はtrue
+    if (showPhone && cfg.tel) {
+      const telDigits = (cfg.tel || "").replace(/\D/g, "");
+      const inquiryLabel = cfg.inquiryLabel || "お電話でのご相談";
+      rows.push(`\n▼${inquiryLabel}\n<a href="tel:${telDigits}">${cfg.tel}</a>`);
+    }
+    return rows.join("\n");
   };
 
   const apiKey = process.env.OPENAI_API_KEY;
@@ -157,72 +208,75 @@ export default async function handler(req, res) {
   const model = process.env.OPENAI_MODEL || "gpt-4o-mini"; // 任意差し替え可
 
   try {
-    // ChatGPTへ送信
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model,
-        messages: [
-          {
-            role: "system",
-            content: buildSystemPrompt(config),
-          },
-          {
-            role: "user",
-            content: userMessage,
-          },
-        ],
-        temperature: 0.5, // ぶれ少なめで案内安定
-      }),
-    });
+    let bodyText;
 
-    const data = await response.json();
+    // ① 本文の外出し（oikiなど）：入っていればLLMは呼ばない
+    if (config.staticBodyTemplate && typeof config.staticBodyTemplate === "string") {
+      bodyText = config.staticBodyTemplate
+        .replaceAll("{USER_MESSAGE}", userMessage)
+        .replaceAll("{SITE_URL}", config.siteUrl || "")
+        .replaceAll("{RESERVATION_URL}", config.reservationUrl || "")
+        .replaceAll("{INQUIRY_URL}", config.inquiryUrl || "")
+        .replaceAll("{TEL}", config.tel || "");
+    } else {
+      // ② 通常：LLMで本文生成
+      if (!apiKey) {
+        return res.status(500).json({ error: "OPENAI_API_KEY が未設定です。" });
+      }
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: "system", content: buildSystemPrompt(config) },
+            { role: "user", content: userMessage },
+          ],
+          temperature: 0.5, // ぶれ少なめで案内安定
+        }),
+      });
 
-    if (!response.ok) {
-      const apiErr = data?.error?.message || "Unknown API error";
-      console.error("❌ OpenAI API response not ok:", apiErr);
-      return res.status(502).json({ error: `ChatGPT APIエラー: ${apiErr}` });
+      const data = await response.json();
+
+      if (!response.ok) {
+        const apiErr = data?.error?.message || "Unknown API error";
+        console.error("❌ OpenAI API response not ok:", apiErr);
+        return res.status(502).json({ error: `ChatGPT APIエラー: ${apiErr}` });
+      }
+
+      bodyText = data?.choices?.[0]?.message?.content || "うまく回答できませんでした。";
     }
 
-    const gptReply = data?.choices?.[0]?.message?.content || "うまく回答できませんでした。";
+    // ③ 整形＋フッター＋（医院設定に応じた）緊急注意文
+    const formattedReply = formatReply(bodyText);
+    const footer = buildFooter(config);
 
-    // 文単位で改行（日本語の句点で区切る）
-    const formatReply = (text) => text.replace(/。(?=[^\n])/g, "。\n");
-    const formattedReply = formatReply(gptReply);
+    const showEmergency = config.showEmergencyNotice !== false; // 未指定はtrue
+    const emergencyNoticeText = showEmergency && config.emergencyNotice ? `\n\n${config.emergencyNotice}` : "";
 
-    // 予約導線（URL・電話）
-    const telDigits = (config.tel || "").replace(/\D/g, ""); // 数字以外を除去
-    const replyWithLink = `${formattedReply}
+    const finalReply = `${formattedReply}\n\n${footer}${emergencyNoticeText}`;
 
-— — —
-▼ご予約はこちら  
-<a href="${config.reservationUrl}" target="_blank" rel="noopener noreferrer">${config.reservationUrl}</a>
+    // ④ Googleフォーム送信（キーが揃っている医院のみ。失敗しても主処理は継続）
+    if (config.formUrl && config.entries?.user && config.entries?.bot) {
+      const formData = new URLSearchParams();
+      formData.append(config.entries.user, userMessage);
+      formData.append(config.entries.bot, finalReply);
 
-▼お電話でのご相談  
-<a href="tel:${telDigits}">${config.tel}</a>
+      fetch(config.formUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString(),
+      }).catch((err) => {
+        console.error("❌ Googleフォーム送信失敗:", err?.message);
+      });
+    }
 
-※ 激しい痛み・呼吸困難・意識障害など緊急性が疑われる場合は、ただちに119番や#7119等の救急相談をご利用ください。`;
-
-    // Googleフォーム送信（Q/Aログ）※失敗しても主処理は継続
-    const formData = new URLSearchParams();
-    formData.append(config.entries.user, userMessage);
-    formData.append(config.entries.bot, replyWithLink);
-
-    fetch(config.formUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: formData.toString(),
-    }).catch((err) => {
-      console.error("❌ Googleフォーム送信失敗:", err?.message);
-    });
-
-    return res.status(200).json({ reply: replyWithLink });
+    return res.status(200).json({ reply: finalReply });
   } catch (error) {
-    console.error("❌ ChatGPT API接続エラー:", error);
-    return res.status(500).json({ error: "ChatGPTへの接続に失敗しました。" });
+    console.error("❌ サーバー内部エラー:", error);
+    return res.status(500).json({ error: "サーバー内部エラーが発生しました。" });
   }
 }
