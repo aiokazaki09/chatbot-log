@@ -53,15 +53,20 @@ export default async function handler(req, res) {
       specialty: "耳鼻科",
       formUrl:"https://docs.google.com/forms/u/0/d/e/1FAIpQLSfQ1jboQd0YxoTZ3U_pfUHWNk6zsKYdDKj906AJVBiV9ab-sw/formResponse",
       entries: { user: "entry.1291744880", bot: "entry.373821226" },
+      // --- サイト限定回答ガード ---
+      siteOnlyMode: true,
+      siteUrl: "https://www.oikiiin.com/",
+      inquiryUrl: "https://www.oikiiin.com/",
       reservationUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
 
-      // --- サイト限定回答ガード ---
-      siteOnlyMode: true,                         // サイト外の回答を抑制
-      siteUrl: "https://www.oikiiin.com/",        // 参照サイト
-      inquiryUrl: "https://www.oikiiin.com/",     // ★要差し替え：お問い合わせURL
+      // oikiでは電話・救急を出さない
+      showPhone: false,
+      showEmergencyNotice: false,
+      reservationLabel: "ご予約はこちら", // 必要に応じて「手術相談のご予約」等へ変更
+      inquiryLabel: "お問い合わせはこちら",
       siteFallbackText:
         `当院サイト（{SITE_URL}）に記載のない内容のため、個別確認が必要です。お手数ですが「お電話」または「お問い合わせ」からご相談ください。`,
-
+      staticBodyTemplate: null,
       // oiki専用プロンプト（医院目線を強制）
       promptOverride: `
 【oiki専用方針：サイト限定回答 & 医院目線】
