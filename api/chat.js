@@ -90,6 +90,13 @@ export default async function handler(req, res) {
       `,
       // true: 共通/科別を無視して完全置換、false: 共通＋科別に追記
       promptReplace: false,
+      footerTemplate: ({ reservationUrl, inquiryUrl }) => {
+        return [
+          "— — —",
+          `▼ご予約はこちら\n<a href="${reservationUrl}" target="_blank" rel="noopener noreferrer">${reservationUrl}</a>`,
+          `\n▼お問い合わせはこちら\n<a href="${inquiryUrl}" target="_blank" rel="noopener noreferrer">${inquiryUrl}</a>`,
+        ].join("\n");
+      },
     },
   };
 
