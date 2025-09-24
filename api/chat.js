@@ -33,19 +33,6 @@ export default async function handler(req, res) {
       inquiryLabel: "お電話でのご相談"
     },
 
-    tamagawa: {
-      specialty: "歯科",
-      formUrl:
-        "https://docs.google.com/forms/u/0/d/e/1FAIpQLSclRVMUX4EHA1-MhMlZb_Ee5gUw3EiZWJobIXDMzyc8DMvCBQ/formResponse",
-      entries: { user: "entry.1291744880", bot: "entry.373821226" },
-      reservationUrl: "https://www.tamagawa-sika.com/contact/",
-      tel: "078-331-4008",
-      showPhone: true,
-      showEmergencyNotice: true,
-      reservationLabel: "ご予約はこちら",
-      inquiryLabel: "お電話でのご相談"
-    },
-
     masahisa: {
       specialty: "歯科",
       formUrl:
