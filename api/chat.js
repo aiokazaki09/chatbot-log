@@ -51,10 +51,9 @@ export default async function handler(req, res) {
     // ▼ oiki（耳鼻科）：サイト限定回答モード＋医院目線
     oiki: {
       specialty: "耳鼻科",
-      formUrl:
-        "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfQ1jboQd0YxoTZ3U_pfUHWNk6zsKYdDKj906AJVBiV9ab-sw/formResponse",
+      formUrl:"https://docs.google.com/forms/u/0/d/e/1FAIpQLSfQ1jboQd0YxoTZ3U_pfUHWNk6zsKYdDKj906AJVBiV9ab-sw/formResponse",
       entries: { user: "entry.1291744880", bot: "entry.373821226" },
-      reservationUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?"
+      reservationUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
 
       // --- サイト限定回答ガード ---
       siteOnlyMode: true,                         // サイト外の回答を抑制
