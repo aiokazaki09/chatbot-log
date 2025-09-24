@@ -88,10 +88,7 @@ export default async function handler(req, res) {
       // oikiでは電話・救急を出さない
       showPhone: false,
       showEmergencyNotice: false,
-
       reservationLabel: "ご予約はこちら", // 例: 「手術相談のご予約」に変えてもOK
-      inquiryLabel: "お問い合わせはこちら",
-
       siteFallbackText:
         "当院サイト（{SITE_URL}）に記載のない内容のため、個別確認が必要です。お手数ですが「お問い合わせ」からご相談ください。",
 
