@@ -65,7 +65,7 @@ export default async function handler(req, res) {
       reservationLabel: "ご予約はこちら", // 必要に応じて「手術相談のご予約」等へ変更
       inquiryLabel: "お問い合わせはこちら",
       siteFallbackText:
-        `当院サイト（{SITE_URL}）に記載のない内容のため、個別確認が必要です。お手数ですが「お電話」または「お問い合わせ」からご相談ください。`,
+        `当院サイト（{SITE_URL}）に記載のない内容のため、個別確認が必要です。お手数ですが「お問い合わせ」からご相談ください。`,
       staticBodyTemplate: null,
       // oiki専用プロンプト（医院目線を強制）
       promptOverride: `
