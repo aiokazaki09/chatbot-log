@@ -69,7 +69,7 @@ export default async function handler(req, res) {
       // --- サイト限定回答ガード ---
       siteOnlyMode: true,
       siteUrl: "https://www.oikiiin.com/",
-      inquiryUrl: "https://www.oikiiin.com/",
+      inquiryUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
       reservationUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
 
       // oikiでは電話・救急を出さない
