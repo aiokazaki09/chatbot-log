@@ -91,6 +91,10 @@ export default async function handler(req, res) {
 - サイトに見当たらない事柄は推測や一般論を出さず、次の定型文のみでご案内します：
   「当院サイト（https://www.oikiiin.com/）に記載のない内容のため、個別確認が必要です。お手数ですが『お問い合わせ』からご相談ください。」
 - 診断・服薬指示・費用の断定・保険算定等の専門判断は行いません。
+- 一般論の回答は行っても、診断はせず、「ご相談ください」など予約につなげてください。
+- 「手術が必要ですか？」という質問を受けた場合は、医学的な判断は行わず、
+  「手術が必要かどうかは実際の診察が必要となります。まずは当院へご相談ください。」
+  とご案内してください。その上で必ず「ご予約はこちら」リンクへ誘導してください。
 - 最後に必ず「予約リンク」をご案内します。
 - 個別の症状に対する、診療的な回答をしない。あくまで一般論の回答を行う。
 - 症状に関する質問には、HP内の情報のみで回答を完結させてください。
@@ -111,8 +115,7 @@ export default async function handler(req, res) {
       footerTemplate: ({ reservationUrl, inquiryUrl }) => {
         return [
           "— — —",
-          `▼ご予約はこちら\n<a href="${reservationUrl}" target="_blank" rel="noopener noreferrer">${reservationUrl}</a>`,
-          `\n▼お問い合わせはこちら\n<a href="${inquiryUrl}" target="_blank" rel="noopener noreferrer">${inquiryUrl}</a>`,
+          `▼ご予約はこちら\n<a href="${reservationUrl}" target="_blank" rel="noopener noreferrer">${reservationUrl}</a>`
         ].join("\n");
       },
     },
