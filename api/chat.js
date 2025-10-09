@@ -157,10 +157,9 @@ oiki: {
 -
 +};  // ← ここで formConfigs を閉じる
 
-console.log("📌 受信したclinicId:", clinicId);
-const config = formConfigs[clinicId];
+console.log("📌 受信したclinicId:", clinicId); 
+const config = formConfigs[clinicId]; 
 if (!config) return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
-
 
   // --- 診療科別のプロンプトテンプレ ---
   const specialtyPrompts = {
