@@ -72,8 +72,8 @@ export default async function handler(req, res) {
       // --- サイト限定回答ガード ---
       siteOnlyMode: true,
       siteUrl: "https://www.oikiiin.com/",
-      inquiryUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
-      reservationUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
+      inquiryUrl: "https://www.oikiiin.com/contact/",
+      reservationUrl: "https://oikiiin.reserve.ne.jp/",
       // oikiでは電話・救急を出さない
       showPhone: false,
       showEmergencyNotice: false,
@@ -110,10 +110,10 @@ export default async function handler(req, res) {
 まずは一度当院を受診いただき、手術の可能性も含めて、より良い治療方針を一緒に見つけていけたらと存じます。
 
 こちらのページからご予約をお取りいただけますので、ご活用くださいませ。  
-{RESERVATION_URL}
+<a href="{RESERVATION_URL}" target="_blank" rel="noopener noreferrer">{RESERVATION_URL}</a>
 
 手術について、担当者へ直接ご質問の場合はこちらへ  
-{INQUIRY_URL}
+<a href="{INQUIRY_URL}" target="_blank" rel="noopener noreferrer">{INQUIRY_URL}</a>
 ---
 
 ◆ B. 症状に関する質問（例：耳・鼻・喉の症状や検査・診療内容）
@@ -125,10 +125,10 @@ export default async function handler(req, res) {
      「ご予約はこちらからできますので、よろしければご活用ください。」
      — — —
      ▼ご予約はこちら
-     {RESERVATION_URL}
+     <a href="{RESERVATION_URL}" target="_blank" rel="noopener noreferrer">{RESERVATION_URL}</a>
 
      ▼担当者への問合せはこちら
-     {INQUIRY_URL}
+     <a href="{INQUIRY_URL}" target="_blank" rel="noopener noreferrer">{INQUIRY_URL}</a>
 
 【確認してよければ添える質問（必要な場合のみ／最大3点まで）】
 - いつから（急に／徐々に／きっかけ）
