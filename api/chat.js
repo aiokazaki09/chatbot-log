@@ -123,12 +123,6 @@ export default async function handler(req, res) {
   2) 症状についての解説は、必ず当院HP内の該当ページに基づき、要点のみ簡潔に（最大3文）。具体ページが特定できる場合は必ずURLを1つ添付（{SITE_URL}配下のみ）。不明な場合は出さない。
   3) 締め（固定）：
      「ご予約はこちらからできますので、よろしければご活用ください。」
-     — — —
-     ▼ご予約はこちら
-     <a href="{RESERVATION_URL}" target="_blank" rel="noopener noreferrer">{RESERVATION_URL}</a>
-
-     ▼担当者への問合せはこちら
-     <a href="{INQUIRY_URL}" target="_blank" rel="noopener noreferrer">{INQUIRY_URL}</a>
 
 【確認してよければ添える質問（必要な場合のみ／最大3点まで）】
 - いつから（急に／徐々に／きっかけ）
