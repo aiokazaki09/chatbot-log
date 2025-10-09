@@ -145,15 +145,22 @@ oiki: {
   promptReplace: false,
 
   // 医院別フッター（電話非表示）— 予約と問い合わせを明示
-  footerTemplate: ({ reservationUrl, inquiryUrl }) => {
-    return [
-      "— — —",
-      `▼ご予約はこちら\n<a href="${reservationUrl}" target="_blank" rel="noopener noreferrer">${reservationUrl}</a>`,
-      "",
-      `▼担当者への問合せはこちら\n<a href="${inquiryUrl}" target="_blank" rel="noopener noreferrer">${inquiryUrl}</a>`
-    ].join("\n");
-  },
-},
+   footerTemplate: ({ reservationUrl, inquiryUrl }) => {
+     return [
+       "— — —",
+       `▼ご予約はこちら\n<a href="${reservationUrl}" target="_blank" rel="noopener noreferrer">${reservationUrl}</a>`,
+       "",
+       `▼担当者への問合せはこちら\n<a href="${inquiryUrl}" target="_blank" rel="noopener noreferrer">${inquiryUrl}</a>`
+     ].join("\n");
+   },
+ },
+-
++};  // ← ここで formConfigs を閉じる
+
+console.log("📌 受信したclinicId:", clinicId);
+const config = formConfigs[clinicId];
+if (!config) return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
+
 
   // --- 診療科別のプロンプトテンプレ ---
   const specialtyPrompts = {
