@@ -268,7 +268,17 @@ if (!config) return res.status(400).json({ error: `未対応のclinicIdです: $
 
       bodyText = data?.choices?.[0]?.message?.content || "うまく回答できませんでした。";
     }
-
+const replaceMap = {
+  "{USER_MESSAGE}": userMessage,
+  "{SITE_URL}": config.siteUrl || "",
+  "{RESERVATION_URL}": config.reservationUrl || "",
+  "{INQUIRY_URL}": config.inquiryUrl || "",
+  "{TEL}": config.tel || "",
+};
+bodyText = Object.entries(replaceMap).reduce(
+  (t, [k, v]) => t.replaceAll(k, v),
+  bodyText || ""
+);
     // ③ 整形＋フッター＋（医院設定に応じた）緊急注意文
     const formattedReply = formatReply(bodyText);
     const footer = buildFooter(config);
