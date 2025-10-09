@@ -1,3 +1,7 @@
+// Node16保険（Node18ならそのままスルー）
+if (typeof fetch === "undefined") {
+  global.fetch = (await import("node-fetch")).default;
+}
 export default async function handler(req, res) {
   // --- CORS ---
   if (req.method === "OPTIONS") {
