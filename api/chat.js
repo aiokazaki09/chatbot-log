@@ -58,32 +58,27 @@ export default async function handler(req, res) {
       reservationLabel: "ご予約はこちら",
       inquiryLabel: "お電話でのご相談"
     },
-
     // ▼ oiki（耳鼻科）：サイト限定回答モード＋医院目線
-oiki: {
-  specialty: "耳鼻科",
-  formUrl:
-    "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfQ1jboQd0YxoTZ3U_pfUHWNk6zsKYdDKj906AJVBiV9ab-sw/formResponse",
-  entries: { user: "entry.1291744880", bot: "entry.373821226" },
-
-  // --- サイト限定回答ガード ---
-  siteOnlyMode: true,
-  siteUrl: "https://www.oikiiin.com/",
-  inquiryUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
-  reservationUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
-
-  // oikiでは電話・救急を出さない
-  showPhone: false,
-  showEmergencyNotice: false,
-  reservationLabel: "ご予約はこちら", // 例: 「手術相談のご予約」に変更可
-  siteFallbackText:
-    "当院サイト（{SITE_URL}）に記載のない内容のため、個別確認が必要です。お手数ですが「お問い合わせ」からご相談ください。",
-
-  // 外出し本文テンプレ（入れたらLLMは呼びません。置換キー: {USER_MESSAGE}/{SITE_URL}/{RESERVATION_URL}/{INQUIRY_URL}/{TEL}）
-  staticBodyTemplate: null,
-
-  // oiki専用プロンプト（医院目線を強制）
-  promptOverride: `
+    oiki: {
+      specialty: "耳鼻科",
+      formUrl:
+        "https://docs.google.com/forms/u/0/d/e/1FAIpQLSfQ1jboQd0YxoTZ3U_pfUHWNk6zsKYdDKj906AJVBiV9ab-sw/formResponse",
+      entries: { user: "entry.1291744880", bot: "entry.373821226" },
+      // --- サイト限定回答ガード ---
+      siteOnlyMode: true,
+      siteUrl: "https://www.oikiiin.com/",
+      inquiryUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
+      reservationUrl: "https://oikiiin.reserve.ne.jp/sp/index.php?",
+      // oikiでは電話・救急を出さない
+      showPhone: false,
+      showEmergencyNotice: false,
+      reservationLabel: "ご予約はこちら", // 例: 「手術相談のご予約」に変更可
+      siteFallbackText:
+        "当院サイト（{SITE_URL}）に記載のない内容のため、個別確認が必要です。お手数ですが「お問い合わせ」からご相談ください。",
+      // 外出し本文テンプレ（入れたらLLMは呼びません。置換キー: {USER_MESSAGE}/{SITE_URL}/{RESERVATION_URL}/{INQUIRY_URL}/{TEL}）
+      staticBodyTemplate: null,
+      // oiki専用プロンプト（医院目線を強制）
+      promptOverride: `
 【oiki専用方針：サイト限定回答 & 医院目線】
 - 私たちは当院（耳鼻咽喉科）の受付スタッフとして回答します。主語は常に「当院」を用い、第三者目線（「こちらの医院」「近くの医院」等）は使いません。
 - 回答は当院サイト（{SITE_URL}）に明記された範囲に限定します。
@@ -138,25 +133,22 @@ oiki: {
 【トーン／文体】
 - 受付として丁寧・簡潔・安心感重視。「〜いたします」「〜くださいませ」を基本に過度な専門用語は避ける。
 - 箇条書きは多用しない。最大でも3点まで。
-- 出力末尾に予約導線（{RESERVATION_URL}）を必ず残す。
-  `,
-
-  // true: 共通/科別を無視して完全置換、false: 共通＋科別に追記
-  promptReplace: false,
-
-  // 医院別フッター（電話非表示）— 予約と問い合わせを明示
-   footerTemplate: ({ reservationUrl, inquiryUrl }) => {
-     return [
-       "— — —",
-       `▼ご予約はこちら\n<a href="${reservationUrl}" target="_blank" rel="noopener noreferrer">${reservationUrl}</a>`,
-       "",
-       `▼担当者への問合せはこちら\n<a href="${inquiryUrl}" target="_blank" rel="noopener noreferrer">${inquiryUrl}</a>`
-     ].join("\n");
-   },
- },
+- 出力末尾に予約導線（{RESERVATION_URL}）を必ず残す。`,
+      
+      // true: 共通/科別を無視して完全置換、false: 共通＋科別に追記
+      promptReplace: false,
+      // 医院別フッター（電話非表示）— 予約と問い合わせを明示
+      footerTemplate: ({ reservationUrl, inquiryUrl }) => {
+        return [
+          "— — —",
+          `▼ご予約はこちら\n<a href="${reservationUrl}" target="_blank" rel="noopener noreferrer">${reservationUrl}</a>`,
+          "",
+          `▼担当者への問合せはこちら\n<a href="${inquiryUrl}" target="_blank" rel="noopener noreferrer">${inquiryUrl}</a>`
+        ].join("\n");
+      },
+    },
 -
-+};  // ← ここで formConfigs を閉じる
-
++};
 console.log("📌 受信したclinicId:", clinicId); 
 const config = formConfigs[clinicId]; 
 if (!config) return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
