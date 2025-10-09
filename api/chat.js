@@ -17,6 +17,7 @@ export default async function handler(req, res) {
 
   const { message: userMessage = "", clinicId } = req.body;
   if (!clinicId) return res.status(400).json({ error: "clinicIdが未指定です" });
+  console.log("[handler] start", { method: req.method, clinicId });
 
   // 各医院ごとの設定（予約URL/電話＋診療科）
   const formConfigs = {
@@ -151,8 +152,7 @@ export default async function handler(req, res) {
         ].join("\n");
       },
     },
--
-+};
+};
 console.log("📌 受信したclinicId:", clinicId); 
 const config = formConfigs[clinicId]; 
 if (!config) return res.status(400).json({ error: `未対応のclinicIdです: ${clinicId}` });
