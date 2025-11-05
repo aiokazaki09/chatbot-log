@@ -296,16 +296,37 @@ bodyText = Object.entries(replaceMap).reduce(
     
     const finalReply = `${formattedReply}\n\n${footer}${emergencyNoticeText}`;
 
-// ---- 改行&<br> 正規化：<p>タグに変換してHTML整形 ----
-const cleaned = finalReply
-  .replace(/(<img\b[^>]*>)\s*(?:\n|<br\s*\/?>)+/gi, "$1") // 画像直後の改行/<br>除去
-  .replace(/\n{3,}/g, "\n\n")                             // 3行以上の改行→2行
-  .replace(/(?:<br\s*\/?>\s*){3,}/gi, "<br><br>")         // <br>3つ以上→2つ
-  .replace(/\n{2,}/g, "<<<PARA>>>")                       // 段落プレースホルダ
-  .replace(/\n/g, " ")                                    // 単発改行→スペース
-  .replace(/<<<PARA>>>/g, "</p><p>");                     // 段落化
+// === ここから差し替え ===
+function normalizeHtml(finalReply) {
+  let html =
+    "<p>" +
+    String(finalReply || "")
+      .replace(/\r\n?/g, "\n")
+      .replace(/\n{3,}/g, "\n\n")
+      .replace(/\n{2,}/g, "</p><p>")
+      .replace(/\n/g, " ")
+    + "</p>";
 
-const htmlReply = `<p>${cleaned.trim()}</p>`;             // 最終HTML
+  html = html.replace(/<p>\s*(<img\b[^>]*>)\s*<\/p>/gi, "<figure>$1</figure>");
+
+  html = html
+    .replace(/(<img\b[^>]*>)(?:\s|&nbsp;)*(?:\n|<br\s*\/?>)+/gi, "$1")
+    .replace(/(<figure\b[^>]*>[\s\S]*?<\/figure>)(?:\s|&nbsp;|<br\s*\/?>)+/gi, "$1");
+
+  const block = "(?:div|section|article|header|footer|nav|p|h[1-6]|ul|ol|li|table|thead|tbody|tr|td|th|blockquote|pre|figure)";
+  html = html
+    .replace(new RegExp(`(?:<br\\s*\\/?>\\s*)+(?=<\\/?${block}\\b)`, "gi"), "")
+    .replace(new RegExp(`(<\\/${block}>)(?:\\s*<br\\s*\\/?>)+`, "gi"), "$1");
+
+  html = html
+    .replace(/(?:<br\s*\/?>\s*){3,}/gi, "<br><br>")
+    .replace(/^(?:\s*<br\s*\/?>)+/i, "")
+    .replace(/(?:\s*<br\s*\/?>)+\s*$/i, "");
+
+  return html.trim();
+}
+
+const htmlReply = normalizeHtml(finalReply);
 
 // ④ Googleフォーム送信（任意）
 if (config.formUrl && config.entries?.user && config.entries?.bot) {
