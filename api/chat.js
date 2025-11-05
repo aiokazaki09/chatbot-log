@@ -225,9 +225,9 @@ const formatReply = (text) => {
     if (showPhone && cfg.tel) {
       const telDigits = (cfg.tel || "").replace(/\D/g, "");
       const inquiryLabel = cfg.inquiryLabel || "お電話でのご相談";
-      rows.push(`\n▼${inquiryLabel}\n<a href="tel:${telDigits}">${cfg.tel}</a>`);
+      rows.push(`▼${inquiryLabel}\n<a href="tel:${telDigits}">${cfg.tel}</a>`);
     }
-    return rows.join("\n");
+    return rows.join("\n\n");
   };
 
   const apiKey = process.env.OPENAI_API_KEY;
@@ -295,6 +295,7 @@ bodyText = Object.entries(replaceMap).reduce(
     const emergencyNoticeText = showEmergency && config.emergencyNotice ? `\n\n${config.emergencyNotice}` : "";
 
     const finalReply = `${formattedReply}\n\n${footer}${emergencyNoticeText}`;
+    const cleaned = finalReply.replace(/(<img[^>]*>)\s*\n+/gi, "$1");
 
     // ④ Googleフォーム送信（キーが揃っている医院のみ。失敗しても主処理は継続）
     if (config.formUrl && config.entries?.user && config.entries?.bot) {
@@ -310,8 +311,7 @@ bodyText = Object.entries(replaceMap).reduce(
         console.error("❌ Googleフォーム送信失敗:", err?.message);
       });
     }
-
-    return res.status(200).json({ reply: finalReply });
+    return res.status(200).json({ reply: cleaned });
   } catch (error) {
     console.error("❌ サーバー内部エラー:", error);
     return res.status(500).json({ error: "サーバー内部エラーが発生しました。" });
