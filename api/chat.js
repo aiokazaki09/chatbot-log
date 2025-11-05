@@ -293,12 +293,18 @@ bodyText = Object.entries(replaceMap).reduce(
 
     const showEmergency = config.showEmergencyNotice !== false; // 未指定はtrue
     const emergencyNoticeText = showEmergency && config.emergencyNotice ? `\n\n${config.emergencyNotice}` : "";
-
-    const finalReply = `${formattedReply}\n\n${footer}${emergencyNoticeText}`;
+    
+    const block = "(?:table|thead|tbody|tr|th|td|ul|ol|li|div|section|article|header|footer|nav|p|h[1-6]|blockquote|pre)";
     const cleaned = finalReply
-  // 画像直後の改行を全部削除
-  .replace(/(<img[^>]*>)\s*\n+/gi, "$1")
-  // 3行以上の改行 → 2行に圧縮
+  // 画像直後の \n / <br> を除去
+  .replace(/(<img\b[^>]*>)\s*(?:\n|<br\s*\/?>)+/gi, "$1")
+  // ブロック要素の「直前」にある <br> 群を削除
+  .replace(new RegExp(`(?:<br\\s*\\/?>\\s*)+(?=<${block}\\b)`, "gi"), "")
+  // ブロック要素の「直後」にある <br> 群を削除
+  .replace(new RegExp(`(<\\/${block}>)(?:\\s*<br\\s*\\/?>)+`, "gi"), "$1")
+  // 3つ以上の <br> は 2つに圧縮
+  .replace(/(?:<br\s*\/?>\s*){3,}/gi, "<br><br>")
+  // 3行以上の生の改行は 2行に圧縮
   .replace(/\n{3,}/g, "\n\n");
 
     // ④ Googleフォーム送信（キーが揃っている医院のみ。失敗しても主処理は継続）
