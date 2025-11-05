@@ -294,34 +294,32 @@ bodyText = Object.entries(replaceMap).reduce(
     const showEmergency = config.showEmergencyNotice !== false; // 未指定はtrue
     const emergencyNoticeText = showEmergency && config.emergencyNotice ? `\n\n${config.emergencyNotice}` : "";
     
-    const block = "(?:table|thead|tbody|tr|th|td|ul|ol|li|div|section|article|header|footer|nav|p|h[1-6]|blockquote|pre)";
-    const cleaned = finalReply
-  // 画像直後の \n / <br> を除去
-  .replace(/(<img\b[^>]*>)\s*(?:\n|<br\s*\/?>)+/gi, "$1")
-  // ブロック要素の「直前」にある <br> 群を削除
-  .replace(new RegExp(`(?:<br\\s*\\/?>\\s*)+(?=<${block}\\b)`, "gi"), "")
-  // ブロック要素の「直後」にある <br> 群を削除
-  .replace(new RegExp(`(<\\/${block}>)(?:\\s*<br\\s*\\/?>)+`, "gi"), "$1")
-  // 3つ以上の <br> は 2つに圧縮
-  .replace(/(?:<br\s*\/?>\s*){3,}/gi, "<br><br>")
-  // 3行以上の生の改行は 2行に圧縮
-  .replace(/\n{3,}/g, "\n\n");
+    const finalReply = `${formattedReply}\n\n${footer}${emergencyNoticeText}`;
 
-    // ④ Googleフォーム送信（キーが揃っている医院のみ。失敗しても主処理は継続）
-    if (config.formUrl && config.entries?.user && config.entries?.bot) {
-      const formData = new URLSearchParams();
-      formData.append(config.entries.user, userMessage);
-      formData.append(config.entries.bot, finalReply);
+// ---- 改行&<br> 正規化：<p>タグに変換してHTML整形 ----
+const cleaned = finalReply
+  .replace(/(<img\b[^>]*>)\s*(?:\n|<br\s*\/?>)+/gi, "$1") // 画像直後の改行/<br>除去
+  .replace(/\n{3,}/g, "\n\n")                             // 3行以上の改行→2行
+  .replace(/(?:<br\s*\/?>\s*){3,}/gi, "<br><br>")         // <br>3つ以上→2つ
+  .replace(/\n{2,}/g, "<<<PARA>>>")                       // 段落プレースホルダ
+  .replace(/\n/g, " ")                                    // 単発改行→スペース
+  .replace(/<<<PARA>>>/g, "</p><p>");                     // 段落化
 
-      fetch(config.formUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString(),
-      }).catch((err) => {
-        console.error("❌ Googleフォーム送信失敗:", err?.message);
-      });
-    }
-    return res.status(200).json({ reply: cleaned });
+const htmlReply = `<p>${cleaned.trim()}</p>`;             // 最終HTML
+
+// ④ Googleフォーム送信（任意）
+if (config.formUrl && config.entries?.user && config.entries?.bot) {
+  const formData = new URLSearchParams();
+  formData.append(config.entries.user, userMessage);
+  formData.append(config.entries.bot, htmlReply);         // ← htmlReply を送る
+  fetch(config.formUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: formData.toString(),
+  }).catch(err => console.error("❌ Googleフォーム送信失敗:", err?.message));
+}
+
+return res.status(200).json({ reply: htmlReply });        // ← htmlReply を返す
   } catch (error) {
     console.error("❌ サーバー内部エラー:", error);
     return res.status(500).json({ error: "サーバー内部エラーが発生しました。" });
