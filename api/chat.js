@@ -189,8 +189,22 @@ if (!config) return res.status(400).json({ error: `未対応のclinicIdです: $
     return merged;
   };
 
-  // 文単位で改行（日本語の句点で区切る）
-  const formatReply = (text) => (text || "").replace(/。(?=[^\n])/g, "。\n");
+// 置き換え：文単位改行をやめ、改行を正規化
+const formatReply = (text) => {
+  const s = (text || "").replace(/\r\n?|\r/g, "\n");
+
+  // 1) 句点＋単発改行は改行を消して文をつなげる（段落改行は保持）
+  //   「。\n\n」は段落、「。\n」は行折り返し→削除
+  const noSentenceBreaks = s
+    .replace(/。\n(?!\n)/g, "。")   // 「。\n」→「。」
+    .replace(/(?<!。)\n(?!\n)/g, " "); // 文中の単発改行はスペースに
+
+  // 2) 連続しすぎる改行は2個までに圧縮（＝段落改行）
+  const normalized = noSentenceBreaks.replace(/\n{3,}/g, "\n\n").trim();
+
+  return normalized;
+};
+
 
   // 医院ごとのフッター（電話表示の有無や文言を尊重）
   const buildFooter = (cfg) => {
