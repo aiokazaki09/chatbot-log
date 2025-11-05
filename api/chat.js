@@ -295,7 +295,11 @@ bodyText = Object.entries(replaceMap).reduce(
     const emergencyNoticeText = showEmergency && config.emergencyNotice ? `\n\n${config.emergencyNotice}` : "";
 
     const finalReply = `${formattedReply}\n\n${footer}${emergencyNoticeText}`;
-    const cleaned = finalReply.replace(/(<img[^>]*>)\s*\n+/gi, "$1");
+    const cleaned = finalReply
+  // 画像直後の改行を全部削除
+  .replace(/(<img[^>]*>)\s*\n+/gi, "$1")
+  // 3行以上の改行 → 2行に圧縮
+  .replace(/\n{3,}/g, "\n\n");
 
     // ④ Googleフォーム送信（キーが揃っている医院のみ。失敗しても主処理は継続）
     if (config.formUrl && config.entries?.user && config.entries?.bot) {
