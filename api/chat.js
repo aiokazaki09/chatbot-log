@@ -146,6 +146,18 @@ export default async function handler(req, res) {
         ].join("\n");
       },
     },
+     yasuda: {
+      specialty: "歯科",
+      formUrl:
+        "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdUp97aKd7Lwto5KCBIuyjKIeheJYdReFyl68ZAvBIJT-1-Og/formResponse",
+      entries: { user: "entry.1291744880", bot: "entry.373821226" },
+      reservationUrl: "https://reservation.stransa.co.jp/3776e7de192a5c9830ee492c49550526",
+      tel: "0120-87-3015",
+      showPhone: true,
+      showEmergencyNotice: true,
+      reservationLabel: "ご予約はこちら",
+      inquiryLabel: "お電話でのご相談"
+    },
 };
 console.log("📌 受信したclinicId:", clinicId); 
 const config = formConfigs[clinicId]; 
