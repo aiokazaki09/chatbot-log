@@ -364,21 +364,19 @@
 
   /* ── setTyping: rAF 2段重ねでtransitionを確実に発火させる ── */
   function setTyping(on) {
-    const el = document.getElementById('cbv2-typing');
-    if (!el) return;
-    if (on) {
-      el.classList.remove('cbv2-show');
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          el.classList.add('cbv2-show');
-          scrollBottom();
-        });
-      });
-    } else {
-      el.classList.remove('cbv2-show');
-      scrollBottom();
-    }
+  const el = document.getElementById('cbv2-typing');
+  if (!el) return;
+  if (on) {
+    el.style.maxHeight  = '80px';
+    el.style.opacity    = '1';
+    el.style.visibility = 'visible';
+  } else {
+    el.style.maxHeight  = '0px';
+    el.style.opacity    = '0';
+    el.style.visibility = 'hidden';
   }
+  scrollBottom();
+}
 
   /* ============================================================
      メッセージ追加
