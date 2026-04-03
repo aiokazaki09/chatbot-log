@@ -239,7 +239,7 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     #cbv2-send:disabled { opacity: .5; cursor: default; transform: none; }
     #cbv2-send svg { width: 18px; height: 18px; fill: #fff; }
 
-    #cbv2-footer { text-align: center; font-size: 10px; color: #d0b8b8; padding: 0 14px 10px; font-weight: 300; }
+    #cbv2-footer { text-align: center; font-size: 10px; color: #572d2d; padding: 0 14px 10px; font-weight: 300; }
 
     @media (max-width: 480px) {
     #cbv2-window  { right: 14px; bottom: 94px; width: 90%;}
