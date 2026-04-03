@@ -128,8 +128,7 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
     #cbv2-messages::-webkit-scrollbar { width: 4px; }
     #cbv2-messages::-webkit-scrollbar-thumb { background: #fcd5d5; border-radius: 4px; }
-
-    .cbv2-date { text-align: center; font-size: 10.5px; color: #c0a8a8; font-weight: 300; }
+    .cbv2-date { text-align: center; font-size: 10.5px; color: #572d2d; font-weight: 300; }
     .cbv2-date::before, .cbv2-date::after { content: '✿'; margin: 0 8px; opacity: .5; }
 
     .cbv2-msg { display: flex; gap: 8px; align-items: flex-end; }
