@@ -367,13 +367,9 @@
   const el = document.getElementById('cbv2-typing');
   if (!el) return;
   if (on) {
-    el.style.maxHeight  = '80px';
-    el.style.opacity    = '1';
-    el.style.visibility = 'visible';
+    el.style.cssText += '; display:flex !important; opacity:1 !important; height:auto !important; visibility:visible !important; overflow:visible !important;';
   } else {
-    el.style.maxHeight  = '0px';
-    el.style.opacity    = '0';
-    el.style.visibility = 'hidden';
+    el.style.cssText += '; display:none !important; opacity:0 !important; height:0 !important; visibility:hidden !important;';
   }
   scrollBottom();
 }
@@ -497,11 +493,21 @@
      開閉
   ============================================================ */
   function toggleChat() {
-    isOpen = !isOpen;
-    document.getElementById('cbv2-window').classList.toggle('cbv2-open', isOpen);
-    document.getElementById('cbv2-launcher').textContent = isOpen ? '✕' : CFG.avatar;
-    if (isOpen) setTimeout(() => document.getElementById('cbv2-input').focus(), 350);
+  isOpen = !isOpen;
+  const win = document.getElementById('cbv2-window');
+  const btn = document.getElementById('cbv2-launcher');
+
+  if (isOpen) {
+    win.classList.add('cbv2-open');
+    win.style.cssText += '; opacity:1 !important; transform:none !important; pointer-events:all !important;';
+    btn.textContent = '✕';
+    setTimeout(() => document.getElementById('cbv2-input').focus(), 350);
+  } else {
+    win.classList.remove('cbv2-open');
+    win.style.cssText += '; opacity:0 !important; transform:translateY(20px) scale(.96) !important; pointer-events:none !important;';
+    btn.textContent = CFG.avatar;
   }
+}
 
   /* ============================================================
      クイックリプライ生成
