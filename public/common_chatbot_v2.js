@@ -203,6 +203,43 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     .cbv2-dot:nth-child(2) { animation-delay: .2s; background: #f4b8d0; }
     .cbv2-dot:nth-child(3) { animation-delay: .4s; background: #c8b8f0; }
     @keyframes cbv2-bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-7px)} }
+    /* ── AI波形タイピングアニメーション ── */
+.cbv2-typing-bubble {
+  background: #fff;
+  border: 1.5px solid #fcd5d5;
+  border-radius: 16px 16px 16px 4px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cbv2-dot {
+  width: 4px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #f9b4b4, #c8b8f0);
+  box-shadow: 0 0 6px rgba(244, 168, 200, 0.8), 0 0 12px rgba(200, 184, 240, 0.5);
+  animation: cbv2-wave 1.2s ease-in-out infinite;
+}
+
+.cbv2-dot:nth-child(1) { animation-delay: 0s;    height: 10px; }
+.cbv2-dot:nth-child(2) { animation-delay: 0.15s; height: 10px; }
+.cbv2-dot:nth-child(3) { animation-delay: 0.3s;  height: 10px; }
+.cbv2-dot:nth-child(4) { animation-delay: 0.45s; height: 10px; }
+.cbv2-dot:nth-child(5) { animation-delay: 0.6s;  height: 10px; }
+
+@keyframes cbv2-wave {
+  0%, 100% {
+    height: 6px;
+    opacity: 0.4;
+    box-shadow: 0 0 4px rgba(244, 168, 200, 0.4);
+  }
+  50% {
+    height: 22px;
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(244, 168, 200, 0.9), 0 0 20px rgba(200, 184, 240, 0.6);
+  }
+}
 
     /* クイックリプライ */
     #cbv2-quick { padding: 8px 14px 6px; flex-shrink: 0; }
@@ -296,6 +333,8 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
           <div id="cbv2-typing">
             <div class="cbv2-avatar" style="background:#fde0e0">${CFG.avatar}</div>
             <div class="cbv2-typing-bubble">
+              <span class="cbv2-dot"></span>
+              <span class="cbv2-dot"></span>
               <span class="cbv2-dot"></span>
               <span class="cbv2-dot"></span>
               <span class="cbv2-dot"></span>
