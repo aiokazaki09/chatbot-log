@@ -104,7 +104,7 @@
 
     #cbv2-header {
       background: linear-gradient(120deg,#fcd5d5,#fde8f4,#e8d8f8);
-      padding: 14px 16px 12px;
+      padding: 5px 10px 5px;
       display: flex; align-items: center; gap: 12px; flex-shrink: 0;
       border-bottom: 1px solid rgba(244,168,168,.25);
     }
@@ -240,8 +240,13 @@
     #cbv2-footer { text-align: center; font-size: 10px; color: #d0b8b8; padding: 0 14px 10px; font-weight: 300; }
 
     @media (max-width: 480px) {
-      #cbv2-window  { right: 14px; bottom: 94px; }
-      #cbv2-launcher { right: 14px; bottom: 18px; }
+    #cbv2-window  { right: 14px; bottom: 94px; width: 90%;}
+    #cbv2-launcher { right: 14px; bottom: 18px; }
+    #cbv2-footer { padding: 0 0 10px;}
+    #cbv2-input {min-height: 30px;max-height: 100px;padding: 5px 14px;}
+    #cbv2-send {width: 35px;height: 35px;}
+    .cbv2-qbtn {font-size: 10px;}
+    #cbv2-quick-list{gap:5px;}
     }
   `;
 
