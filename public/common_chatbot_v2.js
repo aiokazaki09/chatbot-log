@@ -18,7 +18,6 @@
          '🦷 インプラントについて',
          '✨ インビザラインについて',
          '🕐 診療時間を教えて',
-         '😟 急に痛くなった',
        ],
        imageMap: {
          implant:    [{ src: '/wp-content/uploads/implant_01.jpg', label: 'インプラント 症例①' }],
@@ -77,7 +76,7 @@
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 6px 24px rgba(244,168,200,.5);
       transition: transform .25s, box-shadow .25s;
-      z-index: 99999; font-size: 28px;
+      z-index: 99998; font-size: 28px;
       font-family: 'M PLUS Rounded 1c', sans-serif;
     }
     #cbv2-launcher:hover { transform: scale(1.09); }
