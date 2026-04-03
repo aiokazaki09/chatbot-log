@@ -98,6 +98,11 @@
       opacity: 0; transform: translateY(20px) scale(.96); pointer-events: none;
       transition: opacity .35s cubic-bezier(.34,1.3,.64,1), transform .35s cubic-bezier(.34,1.3,.64,1);
       font-family: 'M PLUS Rounded 1c', sans-serif;
+      background: rgba(255, 255, 255, 0.72);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(255, 255, 255, 0.5);
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
     #cbv2-window.cbv2-open { opacity: 1; transform: none; pointer-events: all; }
 
@@ -120,7 +125,6 @@
     #cbv2-messages {
       flex: 1; overflow-y: auto; padding: 16px 14px 8px;
       display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth;
-      background: linear-gradient(180deg,#fffaf9,#fff);
     }
     #cbv2-messages::-webkit-scrollbar { width: 4px; }
     #cbv2-messages::-webkit-scrollbar-thumb { background: #fcd5d5; border-radius: 4px; }
@@ -140,7 +144,7 @@
     .cbv2-msg.cbv2-user .cbv2-avatar { background: #ede8f8; }
     .cbv2-content { display: flex; flex-direction: column; max-width: 82%; }
     .cbv2-msg.cbv2-user .cbv2-content { align-items: flex-end; }
-    .cbv2-name { font-size: 10px; color: #c0a0a0; font-weight: 300; margin-bottom: 3px; padding-left: 2px; }
+    .cbv2-name { font-size: 10px; color: #572d2d; font-weight: 900; margin-bottom: 3px; padding-left: 2px; }
     .cbv2-msg.cbv2-user .cbv2-name { padding-right: 2px; color: #a0a0c0; }
     .cbv2-bubble {
       padding: 10px 14px; border-radius: 16px;
@@ -156,7 +160,7 @@
       border-bottom-right-radius: 4px; color: #5a2e3e;
       box-shadow: 0 2px 8px rgba(224,122,122,.18);
     }
-    .cbv2-time { font-size: 10px; color: #d0b8b8; font-weight: 300; margin-top: 4px; padding: 0 2px; }
+    .cbv2-time { font-size: 10px; color: #572d2d; font-weight: 500; margin-top: 4px; padding: 0 2px; }
 
     /* bubble内スタイル */
     .cbv2-bubble b, .cbv2-bubble strong { font-weight: 500; color: #b05060; }
@@ -203,7 +207,7 @@
 
     /* クイックリプライ */
     #cbv2-quick { padding: 8px 14px 6px; flex-shrink: 0; }
-    .cbv2-quick-label { font-size: 10.5px; color: #c0a8a8; font-weight: 300; margin-bottom: 6px; }
+    .cbv2-quick-label { font-size: 10.5px; color: #572d2d; font-weight: 500; margin-bottom: 6px; }
     .cbv2-quick-label::before { content: '✿ '; }
     #cbv2-quick-list { display: flex; flex-wrap: wrap; gap: 7px; }
     .cbv2-qbtn {
