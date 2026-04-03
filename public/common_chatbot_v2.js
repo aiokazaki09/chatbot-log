@@ -89,7 +89,7 @@
 
     #cbv2-window {
       position: fixed; bottom: 106px; right: 28px;
-      width: min(390px, calc(100vw - 40px));
+      width: min(455px, calc(100vw - 40px));
       height: min(600px, calc(100vh - 150px));
       background: #fff; border-radius: 22px;
       box-shadow: 0 12px 40px rgba(224,122,122,.15), 0 3px 10px rgba(58,46,46,.07);
