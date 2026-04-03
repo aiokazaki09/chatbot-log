@@ -241,7 +241,7 @@
 
     @media (max-width: 480px) {
     #cbv2-window  { right: 14px; bottom: 94px; width: 90%;}
-    #cbv2-launcher { right: 14px; bottom: 18px; }
+    #cbv2-launcher { right: 27px;bottom: 78px; }
     #cbv2-footer { padding: 0 0 10px;}
     #cbv2-input {min-height: 30px;max-height: 100px;padding: 5px 14px;}
     #cbv2-send {width: 35px;height: 35px;}
