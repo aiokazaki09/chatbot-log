@@ -91,18 +91,17 @@
       position: fixed; bottom: 106px; right: 28px;
       width: min(455px, calc(100vw - 40px));
       height: min(600px, calc(100vh - 150px));
-      background: #fff; border-radius: 22px;
-      box-shadow: 0 12px 40px rgba(224,122,122,.15), 0 3px 10px rgba(58,46,46,.07);
+      border-radius: 22px;
       display: flex; flex-direction: column; overflow: hidden;
       z-index: 99998;
       opacity: 0; transform: translateY(20px) scale(.96); pointer-events: none;
       transition: opacity .35s cubic-bezier(.34,1.3,.64,1), transform .35s cubic-bezier(.34,1.3,.64,1);
       font-family: 'M PLUS Rounded 1c', sans-serif;
-      background: rgba(255, 255, 255, 0.72);
-backdrop-filter: blur(12px);
--webkit-backdrop-filter: blur(12px);
-border: 1px solid rgba(255, 255, 255, 0.5);
-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
     #cbv2-window.cbv2-open { opacity: 1; transform: none; pointer-events: all; }
 
@@ -117,7 +116,7 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
       display: flex; align-items: center; justify-content: center; font-size: 22px;
       box-shadow: 0 2px 10px rgba(224,122,122,.18); flex-shrink: 0;
     }
-    #cbv2-header-name { font-family: 'Klee One', cursive; font-size: 14px; font-weight: 600; color: #3a2e2e; line-height: 1.6;}
+    #cbv2-header-name { font-family: 'Klee One', cursive; font-size: 14px; font-weight: 600; color: #3a2e2e; line-height: 1.6; }
     #cbv2-header-sub  { font-size: 11px; color: #6b5555; font-weight: 300; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
     .cbv2-status-dot  { width: 7px; height: 7px; background: #f9a8a8; border-radius: 50%; animation: cbv2-blink 2.2s ease-in-out infinite; }
     @keyframes cbv2-blink { 0%,100%{opacity:1} 50%{opacity:.3} }
@@ -195,51 +194,30 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     #cbv2-lightbox img { max-width: 90vw; max-height: 80vh; border-radius: 12px; }
     #cbv2-lb-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,.2); border: none; color: #fff; font-size: 22px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
-    /* タイピング */
+    /* ── AI波形タイピングアニメーション ── */
     #cbv2-typing { display: flex; gap: 8px; align-items: flex-end; overflow: hidden; max-height: 0; opacity: 0; transition: max-height .4s, opacity .3s; }
     #cbv2-typing.cbv2-show { max-height: 60px; opacity: 1; }
-    .cbv2-typing-bubble { background: #fff; border: 1.5px solid #fcd5d5; border-radius: 16px 16px 16px 4px; padding: 12px 16px; display: flex; align-items: center; gap: 6px; }
-    .cbv2-dot { width: 7px; height: 7px; border-radius: 50%; background: #f4a8a8; animation: cbv2-bounce .9s ease-in-out infinite; }
-    .cbv2-dot:nth-child(2) { animation-delay: .2s; background: #f4b8d0; }
-    .cbv2-dot:nth-child(3) { animation-delay: .4s; background: #c8b8f0; }
-    @keyframes cbv2-bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-7px)} }
-    /* ── AI波形タイピングアニメーション ── */
-.cbv2-typing-bubble {
-  background: #fff;
-  border: 1.5px solid #fcd5d5;
-  border-radius: 16px 16px 16px 4px;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.cbv2-dot {
-  width: 4px;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #f9b4b4, #c8b8f0);
-  box-shadow: 0 0 6px rgba(244, 168, 200, 0.8), 0 0 12px rgba(200, 184, 240, 0.5);
-  animation: cbv2-wave 1.2s ease-in-out infinite;
-}
-
-.cbv2-dot:nth-child(1) { animation-delay: 0s;    height: 10px; }
-.cbv2-dot:nth-child(2) { animation-delay: 0.15s; height: 10px; }
-.cbv2-dot:nth-child(3) { animation-delay: 0.3s;  height: 10px; }
-.cbv2-dot:nth-child(4) { animation-delay: 0.45s; height: 10px; }
-.cbv2-dot:nth-child(5) { animation-delay: 0.6s;  height: 10px; }
-
-@keyframes cbv2-wave {
-  0%, 100% {
-    height: 6px;
-    opacity: 0.4;
-    box-shadow: 0 0 4px rgba(244, 168, 200, 0.4);
-  }
-  50% {
-    height: 22px;
-    opacity: 1;
-    box-shadow: 0 0 10px rgba(244, 168, 200, 0.9), 0 0 20px rgba(200, 184, 240, 0.6);
-  }
-}
+    .cbv2-typing-bubble {
+      background: #fff; border: 1.5px solid #fcd5d5;
+      border-radius: 16px 16px 16px 4px;
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .cbv2-dot {
+      width: 4px; border-radius: 4px;
+      background: linear-gradient(180deg, #f9b4b4, #c8b8f0);
+      box-shadow: 0 0 6px rgba(244,168,200,0.8), 0 0 12px rgba(200,184,240,0.5);
+      animation: cbv2-wave 1.2s ease-in-out infinite;
+    }
+    .cbv2-dot:nth-child(1) { animation-delay: 0s;    height: 10px; }
+    .cbv2-dot:nth-child(2) { animation-delay: 0.15s; height: 10px; }
+    .cbv2-dot:nth-child(3) { animation-delay: 0.3s;  height: 10px; }
+    .cbv2-dot:nth-child(4) { animation-delay: 0.45s; height: 10px; }
+    .cbv2-dot:nth-child(5) { animation-delay: 0.6s;  height: 10px; }
+    @keyframes cbv2-wave {
+      0%, 100% { height: 6px;  opacity: 0.4; box-shadow: 0 0 4px rgba(244,168,200,0.4); }
+      50%       { height: 22px; opacity: 1;   box-shadow: 0 0 10px rgba(244,168,200,0.9), 0 0 20px rgba(200,184,240,0.6); }
+    }
 
     /* クイックリプライ */
     #cbv2-quick { padding: 8px 14px 6px; flex-shrink: 0; }
@@ -279,13 +257,13 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     #cbv2-footer { text-align: center; font-size: 10px; color: #572d2d; padding: 0 14px 10px; font-weight: 300; }
 
     @media (max-width: 480px) {
-    #cbv2-window  { right: 14px; bottom: 94px; width: 90%;}
-    #cbv2-launcher { right: 27px;bottom: 78px; }
-    #cbv2-footer { padding: 0 0 10px;}
-    #cbv2-input {min-height: 30px;max-height: 100px;padding: 5px 14px;}
-    #cbv2-send {width: 35px;height: 35px;}
-    .cbv2-qbtn {font-size: 10px;}
-    #cbv2-quick-list{gap:5px;}
+      #cbv2-window   { right: 14px; bottom: 94px; width: 90%; }
+      #cbv2-launcher { right: 27px; bottom: 78px; }
+      #cbv2-footer   { padding: 0 0 10px; }
+      #cbv2-input    { min-height: 30px; max-height: 100px; padding: 5px 14px; }
+      #cbv2-send     { width: 35px; height: 35px; }
+      .cbv2-qbtn     { font-size: 10px; }
+      #cbv2-quick-list { gap: 5px; }
     }
   `;
 
