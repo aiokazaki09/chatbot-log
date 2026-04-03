@@ -2,35 +2,6 @@
    common_chatbot_v2.js
    パステルデザイン統合版 — CSV優先 + GPTフォールバック
    既存の common_chatbot.js には一切影響しません
-
-   【WordPressへの埋め込み方】
-   各クリニックページのカスタムHTMLブロック or functions.phpに：
-
-   <script>
-     window.cbv2 = {
-       clinicId:   'sakura',
-       clinicName: 'さくら歯科 AIアシスタント',
-       avatar:     '🦷',
-       apiUrl:     'https://chatbot-log.vercel.app/api/chat',
-       quickReplies: [
-         '📅 予約したい',
-         '💰 費用・保険について',
-         '🦷 インプラントについて',
-         '✨ インビザラインについて',
-         '🕐 診療時間を教えて',
-       ],
-       imageMap: {
-         implant:    [{ src: '/wp-content/uploads/implant_01.jpg', label: 'インプラント 症例①' }],
-         invisalign: [{ src: '/wp-content/uploads/invisalign_01.jpg', label: 'インビザライン 症例①' }],
-         wire:       [{ src: '/wp-content/uploads/wire_01.jpg', label: 'ワイヤー矯正 症例①' }],
-         whitening:  [{ src: '/wp-content/uploads/whitening_01.jpg', label: 'ホワイトニング 症例①' }],
-         pediatric:  [{ src: '/wp-content/uploads/pediatric_01.jpg', label: '小児歯科 症例①' }],
-       },
-     };
-   </script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-   <script src="/wp-content/themes/your-theme/js/common_chatbot_v2.js"></script>
-
    ============================================================ */
 
 (function () {
@@ -194,29 +165,63 @@
     #cbv2-lightbox img { max-width: 90vw; max-height: 80vh; border-radius: 12px; }
     #cbv2-lb-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,.2); border: none; color: #fff; font-size: 22px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
-    /* ── AI波形タイピングアニメーション ── */
-    #cbv2-typing { display: flex; gap: 8px; align-items: flex-end; overflow: hidden; max-height: 0; opacity: 0; transition: max-height .4s, opacity .3s; }
-    #cbv2-typing.cbv2-show { max-height: 60px; opacity: 1; }
-    .cbv2-typing-bubble {
-      background: #fff; border: 1.5px solid #fcd5d5;
-      border-radius: 16px 16px 16px 4px;
-      padding: 12px 16px;
-      display: flex; align-items: center; gap: 4px;
+    /* ── タイピング表示エリア ── */
+    #cbv2-typing {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transition: max-height .35s ease, opacity .3s ease, visibility .3s ease;
     }
+    #cbv2-typing.cbv2-show {
+      max-height: 80px;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* タイピングバブル */
+    .cbv2-typing-bubble {
+      background: #fff;
+      border: 1.5px solid #fcd5d5;
+      border-radius: 16px 16px 16px 4px;
+      padding: 14px 16px;
+      display: flex !important;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 8px rgba(224,122,122,.08);
+    }
+
+    /* ── AI波形バー ── */
     .cbv2-dot {
-      width: 4px; border-radius: 4px;
+      display: inline-block;
+      width: 4px;
+      height: 10px;
+      border-radius: 4px;
       background: linear-gradient(180deg, #f9b4b4, #c8b8f0);
       box-shadow: 0 0 6px rgba(244,168,200,0.8), 0 0 12px rgba(200,184,240,0.5);
       animation: cbv2-wave 1.2s ease-in-out infinite;
+      flex-shrink: 0;
     }
-    .cbv2-dot:nth-child(1) { animation-delay: 0s;    height: 10px; }
-    .cbv2-dot:nth-child(2) { animation-delay: 0.15s; height: 10px; }
-    .cbv2-dot:nth-child(3) { animation-delay: 0.3s;  height: 10px; }
-    .cbv2-dot:nth-child(4) { animation-delay: 0.45s; height: 10px; }
-    .cbv2-dot:nth-child(5) { animation-delay: 0.6s;  height: 10px; }
+    .cbv2-dot:nth-child(1) { animation-delay: 0s; }
+    .cbv2-dot:nth-child(2) { animation-delay: 0.15s; }
+    .cbv2-dot:nth-child(3) { animation-delay: 0.3s; }
+    .cbv2-dot:nth-child(4) { animation-delay: 0.45s; }
+    .cbv2-dot:nth-child(5) { animation-delay: 0.6s; }
+
     @keyframes cbv2-wave {
-      0%, 100% { height: 6px;  opacity: 0.4; box-shadow: 0 0 4px rgba(244,168,200,0.4); }
-      50%       { height: 22px; opacity: 1;   box-shadow: 0 0 10px rgba(244,168,200,0.9), 0 0 20px rgba(200,184,240,0.6); }
+      0%, 100% {
+        height: 6px;
+        opacity: 0.45;
+        box-shadow: 0 0 4px rgba(244,168,200,0.4);
+      }
+      50% {
+        height: 22px;
+        opacity: 1;
+        box-shadow: 0 0 10px rgba(244,168,200,0.9), 0 0 20px rgba(200,184,240,0.6);
+      }
     }
 
     /* クイックリプライ */
@@ -336,7 +341,6 @@
     `;
     document.body.appendChild(el);
 
-    // CSS注入
     const style = document.createElement('style');
     style.textContent = CSS;
     document.head.appendChild(style);
@@ -358,9 +362,22 @@
     if (m) m.scrollTop = m.scrollHeight;
   }
 
+  /* ── setTyping: rAF 2段重ねでtransitionを確実に発火させる ── */
   function setTyping(on) {
-    document.getElementById('cbv2-typing').classList.toggle('cbv2-show', on);
-    scrollBottom();
+    const el = document.getElementById('cbv2-typing');
+    if (!el) return;
+    if (on) {
+      el.classList.remove('cbv2-show');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          el.classList.add('cbv2-show');
+          scrollBottom();
+        });
+      });
+    } else {
+      el.classList.remove('cbv2-show');
+      scrollBottom();
+    }
   }
 
   /* ============================================================
@@ -371,7 +388,6 @@
     const parent = typing.parentNode;
     const isBot  = role === 'bot';
 
-    // 症例画像
     let imagesHTML = '';
     if (isBot && imageKeys.length > 0) {
       const imgs = imageKeys.flatMap(k => (CFG.imageMap[k] || []));
@@ -396,7 +412,6 @@
         <div class="cbv2-time">${ts()}</div>
       </div>`;
 
-    // 画像クリック → ライトボックス
     div.querySelectorAll('.cbv2-img-wrap').forEach(wrap => {
       wrap.addEventListener('click', () => openLightbox(wrap.dataset.src));
     });
@@ -434,7 +449,6 @@
     document.getElementById('cbv2-send').disabled = true;
     setTyping(true);
 
-    // ① スプシのキーワードマッチを確認
     const normalizedText = normalize(text);
     const matched = knowledgeBase.find(item => {
       return normalize(item.keyword).split(' ').every(w => normalizedText.includes(w));
@@ -442,14 +456,13 @@
 
     try {
       if (matched) {
-        // スプシの回答を使用
-        await new Promise(r => setTimeout(r, 600)); // 自然な待機
+        // アニメーションを最低1000ms表示
+        await new Promise(r => setTimeout(r, 1000));
         setTyping(false);
         const html = String(matched.answer).replace(/""/g, '"').replace(/\r\n?/g, '\n').replace(/\n/g, '<br>');
         const imageKeys = detectImageKeys(html);
         addMsg(html, 'bot', imageKeys);
       } else {
-        // GPT（Vercel）にフォールバック
         const res  = await fetch(CFG.apiUrl, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -545,7 +558,6 @@
     buildQuickReplies();
     loadCSV();
 
-    // イベント
     document.getElementById('cbv2-launcher').addEventListener('click', toggleChat);
     document.getElementById('cbv2-send').addEventListener('click', sendMessage);
     document.getElementById('cbv2-lb-close').addEventListener('click', closeLightbox);
