@@ -117,7 +117,7 @@ box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
       display: flex; align-items: center; justify-content: center; font-size: 22px;
       box-shadow: 0 2px 10px rgba(224,122,122,.18); flex-shrink: 0;
     }
-    #cbv2-header-name { font-family: 'Klee One', cursive; font-size: 14px; font-weight: 600; color: #3a2e2e; }
+    #cbv2-header-name { font-family: 'Klee One', cursive; font-size: 14px; font-weight: 600; color: #3a2e2e; line-height: 1.6;}
     #cbv2-header-sub  { font-size: 11px; color: #6b5555; font-weight: 300; margin-top: 2px; display: flex; align-items: center; gap: 5px; }
     .cbv2-status-dot  { width: 7px; height: 7px; background: #f9a8a8; border-radius: 50%; animation: cbv2-blink 2.2s ease-in-out infinite; }
     @keyframes cbv2-blink { 0%,100%{opacity:1} 50%{opacity:.3} }
